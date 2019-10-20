@@ -1,5 +1,5 @@
 # vue-light-gallery
-VueJS lightweight image gallery for both mobile and desktop browsers.
+VueJS lightweight image gallery for both mobile and desktop browsers. Forked to add srcset and alt attributes to images.
 
 - Standalone: Zero-dependencies.
 - Fully responsive.
@@ -39,14 +39,15 @@ npm install vue-light-gallery
     />
     <ul>
       <li
-        v-for="(thumb, thumbIndex) in [
-          'path/to/thumb_1.jpeg',
-          'path/to/thumb_2.jpeg',
-        ]"
-        :key="thumbIndex"
+        v-for="(image, thumbIndex) in images"
+        :key="'thumb' + thumbIndex"
         @click="index = thumbIndex"
       >
-        <img :src="thumb">
+        <img
+          :src="image.thumb.src"
+          :srcset="image.thumb.srcset"
+          :alt="image.alt"
+        >
       </li>
     </ul>
   </div>
@@ -63,8 +64,15 @@ npm install vue-light-gallery
     data() {
       return {
         images: [
-          { title:'img 1', url: 'path/to/image_1.jpg' },
-          { title:'img 2', url: 'path/to/image_2.jpg' },
+          {
+            title:'img 1',
+            url: 'path/to/image_1.jpg or require() if using nuxt',
+            srcset: 'optional',
+            alt: 'optional',
+            thumb: {
+              srcset: '/path/to/thumb 1x, /other/path 2x'
+            }
+          }
         ],
         index: null,
       };
