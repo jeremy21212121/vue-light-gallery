@@ -10,6 +10,7 @@
       <div
         class="light-gallery__modal"
         :style="`background: ${background}`"
+        @click.stop="close()"
       >
         <div
           :class="['light-gallery__spinner', !isImageLoaded || 'hide']"
@@ -40,6 +41,7 @@
                   v-show="image.title && isImageLoaded"
                   class="light-gallery__text"
                   :style="`background: ${background}; color: ${interfaceColor}`"
+                  @click.stop="swallowEvent"
                 >
                   {{ image.title }}
                 </div>
@@ -49,6 +51,7 @@
                   :src="shouldPreload(imageIndex) ? image.url : false"
                   :alt="image.alt ? image.alt : ''"
                   @load="imageLoaded($event, imageIndex)"
+                  @click.stop="swallowEvent"
                 >
               </div>
             </li>
@@ -58,7 +61,7 @@
           v-if="currentIndex > 0"
           class="light-gallery__prev"
           :style="`background: ${background}`"
-          @click="prev()"
+          @click.stop="prev()"
         >
           <svg
             width="25"
@@ -79,7 +82,7 @@
           v-if="currentIndex + 1 < images.length"
           class="light-gallery__next"
           :style="`background: ${background}`"
-          @click="next()"
+          @click.stop="next()"
         >
           <svg
             width="25"
@@ -98,8 +101,7 @@
         </button>
         <button
           class="light-gallery__close"
-          :style="`background: ${background}`"
-          @click="close()"
+          @click.stop="close()"
         >
           <svg
             width="30"
@@ -298,6 +300,10 @@ export default {
           break;
       }
     },
+    swallowEvent() {
+      // click handler to swallow click event
+      // prevents click propagating to div.light-gallery__modal and triggering close()
+    }
   },
 };
 </script>
@@ -388,6 +394,7 @@ export default {
     display: block;
     background: transparent;
     border: 0;
+    border-radius: 2px;
     line-height: 0;
     outline: none;
     padding: 7px;
